@@ -1,0 +1,257 @@
+﻿@model Tuple<List<ProductReportViewModel>, List<Category>>
+@{
+    ViewData["Title"] = "ProductsReport";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+
+    var categories = Model.Item2.ToList();
+
+}
+
+<head>
+
+    <link href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" rel="stylesheet" />
+    <style>
+        .dt-button {
+            background-color: #0d6efd !important;
+            color: white !important;
+            border: none !important;
+        }
+
+        table.dataTable.no-footer {
+            border: none !important;
+        }
+    </style>
+</head>
+
+<div class="container-fluid pt-3">
+    <h3>Products Report</h3>
+    <div class="row">
+        <div class="col">
+            <div class="callout callout-info">
+                <strong>Total Products: @ViewBag.TotalProducts</strong>
+            </div>
+            <div class="callout callout-info">
+                <strong>Total Categories: @ViewBag.TotalCategories</strong>
+            </div>
+            <div class="callout callout-info">
+                <strong>Total Orders: @ViewBag.TotalOrders</strong>
+            </div>
+
+        </div>
+        <div class="col">
+            <div class="card" style="max-height:200px">
+                <div class="card-header border-0">
+                    <div class="d-flex justify-content-between">
+                        <h3 class="card-title">Sales</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex">
+                        <p class="d-flex flex-column">
+                            <span class="text-bold" style="font-size:45px">@ViewBag.TotalSalesAmount JD</span>
+                            <span>Sales Over Time</span>
+                        </p>
+                        <p class="ml-auto d-flex flex-column text-right">
+                            <span class="text-success">
+                                <i class="fas fa-arrow-up"></i> 33.1%
+                            </span>
+                            <span class="text-muted">Since last month</span>
+                        </p>
+                    </div>
+                    <!-- /.d-flex -->
+
+                    <div class="position-relative mb-4">
+                        <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                        <canvas id="sales-chart" height="0" style="display: block; height: 0px; width: 572px;" width="715" class="chartjs-render-monitor"></canvas>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Products filters options</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body" style="display: block;">
+                    <form method="get" asp-action="FilterProductsReport">
+
+                        <div class="form-group">
+                            <label>Search by category</label>
+                            <select name="category" asp-items="ViewBag.Categoryid" class="custom-select">
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customRange1">Price range: <span id="rangeValue"></span></label>
+                            <input name="price" type="range" class="custom-range" max="1000" id="customRange1" oninput="updateRangeValue()">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </form>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <h3>Products</h3>
+            <!-- /.card -->
+
+            <div class="card shadow-none">
+
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="example" class="table table-bordered text-center table-striped">
+                        <thead>
+                            <tr>
+                                <th>Product name</th>
+                                <th>Product image</th>
+                                <th>Category name</th>
+                                <th>Price</th>
+                                <th>Status(Quantity)</th>
+                                <th>Sales</th>
+                                <th>Reviews</th>
+                                <th>Rating</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in Model.Item1)
+                            {
+                                <tr>
+
+
+                                    <td>@product.ProductName</td>
+                                    <td><img src="@Url.Content("~/Images/" + product.ProductImage)" style="border-radius:7px" width="50px"></td>
+                                    <td>@product.CategoryName</td>
+                                    <td>@product.Price JD</td>
+                                    <td class="@(product.Status == "In Stock" ? "text-success" : "text-danger")">@product.Status <sup><span class="badge badge-info right">@product.StockQuantity</span></sup></td>
+                                    <td>@product.NumberOfSales Sold</td>
+                                    <td>@product.NumberOfReviews</td>
+                                    <td>@(product.Rating == null ? "0" : product.Rating)</td>
+                                    <td><a asp-action="ProductDetails" asp-route-id="@product.ProductId" class="btn btn-primary">View Details</a></td>
+
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                    <a asp-action="ProductsReport" asp-controller="Admin" class="btn btn-outline-primary" style="margin-right:15px">Back to report</a>
+                    <a asp-action="AddProduct" asp-controller="Admin" class="btn btn-primary">Add Product</a>
+                    
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+            
+
+        </div>
+        <!-- /.col -->
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <h3>Categories</h3>
+            <!-- /.card -->
+
+            <div class="card shadow-none">
+
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="example2" class="table table-bordered text-center table-striped">
+                        <thead>
+                            <tr>
+                                <th>Category name</th>
+                                <th>Products</th>
+                                <th>Gender</th>
+                                <th>Sales</th>
+
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var category in Model.Item2)
+                            {
+                                <tr>
+
+
+                                    <td>@category.Categoryname</td>
+                                    <td>@category.Products.Count()</td>
+                                    <td>@category.Gender.Gendername</td>
+                                    <td>@Model.Item1.Where(c=> c.CategoryName == category.Categoryname).Sum(c=> c.NumberOfSales) Sold</td>
+                                    <td>
+                                        <a asp-action="CategoryDetails" asp-route-id="@category.Categoryid" class="btn btn-primary">View Details</a>
+                                        <a asp-action="DeleteCategory" asp-route-id="@category.Categoryid" class="btn btn-danger">Delete</a>
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                    <a asp-action="AddCategory" asp-controller="Admin" class="btn btn-primary">Add new category</a>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.col -->
+    </div>
+</div>
+<!-- DataTables  & Plugins -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js" defer></script>
+<script>
+
+    $(document).ready(function () {
+        $('#example').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ]
+        });
+    });
+
+
+
+</script>
+<script>
+    $(document).ready(function () {
+        $('#example2').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ]
+        });
+    });
+</script>
+<script>
+    function updateRangeValue() {
+        var rangeValue = document.getElementById('customRange1').value;
+        document.getElementById('rangeValue').textContent = rangeValue;
+    }
+
+</script>

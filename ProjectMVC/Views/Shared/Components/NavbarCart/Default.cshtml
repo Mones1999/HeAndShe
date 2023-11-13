@@ -1,0 +1,30 @@
+﻿<div class="dropdown cart-dropdown">
+    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+        <i class="icon-shopping-cart"></i>
+        @if (ViewData["TotalItem"].ToString() != "0")
+        {
+            <span class="cart-count"> @ViewData["TotalItem"].ToString()</span>
+        }
+        
+
+        <span class="cart-txt">@ViewData["TotalPrice"] @ViewBag.CurrencyCode</span>
+    </a>
+
+    <div class="dropdown-menu dropdown-menu-right">
+        <div class="dropdown-cart-products">
+            @await Component.InvokeAsync("Cart")
+
+        </div><!-- End .cart-product -->
+
+        <div class="dropdown-cart-total">
+            <span>Total</span>
+
+            <span class="cart-total-price">@ViewData["TotalPrice"] @ViewBag.CurrencyCode</span>
+        </div><!-- End .dropdown-cart-total -->
+
+        <div class="dropdown-cart-action">
+            <a asp-action="MyCart" asp-controller="Cart" class="btn btn-outline-primary-2">View Cart</a>
+            <a asp-action="Checkout" asp-controller="Checkout" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
+        </div><!-- End .dropdown-cart-total -->
+    </div><!-- End .dropdown-menu -->
+</div><!-- End .cart-dropdown -->

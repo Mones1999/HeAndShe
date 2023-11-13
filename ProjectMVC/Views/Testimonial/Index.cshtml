@@ -1,0 +1,81 @@
+﻿@model Testimonial
+@{
+    ViewData["Title"] = "Add Testtimonial";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <link href="~/css/sweetalert2.min.css" rel="stylesheet">
+</head>
+
+
+<main class="main">
+
+    <div class="page-header text-center" style="background-image: url('/assets/images/page-header-bg.jpg')">
+        <div class="container">
+            <h1 class="page-title">Add Your Testimonial<span>He & She</span></h1>
+        </div><!-- End .container -->
+    </div><!-- End .page-header -->
+    <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Add Testimonial</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+    <div class="page-content">
+        <div class="container">
+            <div class="touch-container row justify-content-center">
+                <div class="col-md-9 col-lg-7">
+                    
+                    <form asp-action="AddTestimonial" method="post" class="contact-form mb-2">
+                        <div class="row">
+                            
+                                <label asp-for="Username" class="sr-only">Name</label>
+                                <input asp-for="Username" type="text" class="form-control" id="cname" placeholder="Name *" required>
+                            
+                            <!-- End .col-sm-4 -->
+                            <label asp-for="Testimonialcontent" class="sr-only">Message</label>
+                            <textarea asp-for="Testimonialcontent" class="form-control" cols="30" rows="4" id="cmessage" required placeholder="Message *"></textarea>
+                        </div><!-- End .row -->
+                        
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-outline-primary-2 btn-minwidth-sm">
+                                <span>SUBMIT</span>
+                                <i class="icon-long-arrow-right"></i>
+                            </button>
+                        </div><!-- End .text-center -->
+                    </form><!-- End .contact-form -->
+                </div><!-- End .col-md-9 col-lg-7 -->
+            </div><!-- End .row -->
+        </div><!-- End .container -->
+    </div><!-- End .page-content -->
+</main><!-- End .main -->
+@if (ViewData["Success"] != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Done',
+            text: '@ViewData["Success"]',
+        })
+    </script>
+}
+else if (ViewData["Wrong"] != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '@ViewData["Wrong"]',
+        })
+    </script>
+
+
+}
+
+

@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Testimonial>
+
+<div class="bg-image bg-overlay pt-5 pb-4" style="background-image: url(/assets/images/backgrounds/bg-1.jpg)">
+    <div class="container">
+        <h2 class="title text-center text-white mb-3">What they said about us</h2><!-- End .title text-center -->
+
+        <div class="owl-carousel owl-theme owl-testimonials owl-light" data-toggle="owl"
+             data-owl-options='{
+                                "nav": false,
+                                "dots": true,
+                                "margin": 20,
+                                "loop": true,
+                                "responsive": {
+                                    "1200": {
+                                        "nav": true
+                                    }
+                                }
+                            }'>
+            
+
+         @foreach(var item in Model)
+            {
+                <blockquote class="testimonial testimonial-icon text-center text-white">
+                    <p style="color:white !important">“ @item.Testimonialcontent.ToString() ”</p>
+
+                    <cite style="margin-top:50px !important">
+                        @item.Username.ToString()
+                        <span>Customer</span>
+                    </cite>
+                </blockquote>
+
+                <!-- End .testimonial -->
+            }   
+        </div><!-- End .testimonials-slider owl-carousel -->
+    </div><!-- End .container -->
+</div><!-- End .bg-image pt-6 pb-6 -->

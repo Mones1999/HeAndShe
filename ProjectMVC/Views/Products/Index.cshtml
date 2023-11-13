@@ -1,0 +1,96 @@
+﻿@model IEnumerable<ProjectMVC.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Productname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stockquantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Imageurl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Numberofreviews)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Productsize)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Coupon)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Productname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stockquantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Imageurl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Numberofreviews)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Productsize)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Categoryid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Coupon.Couponid)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Productid">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Productid">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Productid">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Orderdetail>
+@{
+    ViewData["Title"] = "OrderDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var order = Model.FirstOrDefault();
+    var orderId = order.Orderid;
+
+  
+
+
+    
+}
+<head>
+    <script src="https://kit.fontawesome.com/4c8029d6be.js" crossorigin="anonymous"></script>
+</head>
+
+<div class="page-header text-center" style="background-image: url('/assets/images/page-header-bg.jpg')">
+	<div class="container">
+		<h1 class="page-title">Order Details</h1>
+	</div><!-- End .container -->
+</div>
+
+<div class="pt-5 pb-6 mb-5">
+	<div class="container">
+		<div class="text-center">
+			<h2 class="title">Order Details and Invoice</h2><!-- End .title -->
+		</div>
+		<div class="row">
+            
+                <div class="col-md-4">
+                    From
+                    <address>
+                        <strong>Admin, Inc.</strong><br>
+                        795 Folsom Ave, Suite 600<br>
+                        San Francisco, CA 94107<br>
+                        Phone: (804) 123-5432<br>
+                        Email: info@almasaeedstudio.com
+                    </address>
+                </div>
+                <!-- /.col -->
+                <div class="col-md-4">
+                    To
+                    <address>
+                    <strong>@ViewBag.UserName</strong><br>
+                    @ViewBag.UserAddress<br>
+                    Phone: @ViewBag.UserPhone<br>
+                    Email: @ViewBag.UserEmail
+                    </address>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4">
+
+
+                <b>Order ID:</b> @orderId<br>
+                <b>Payment Due:</b> @ViewBag.PaymentDate<br>
+                    <b>Account:</b> 968-34567
+                </div>
+                <!-- /.col -->
+            
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Order ID</th>
+						<th>Prodcut Name</th>
+						<th>Price</th>
+						<th>Quantity</th>
+					</tr>
+				</thead>
+				<tbody>
+                   
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>@item.Orderid</td>
+							<td>@item.Product.Productname</td>
+							<td>@item.Priceattimeofpurchase</td>
+							<td>@item.Quantity</td>
+						</tr>
+					}
+                    <tr>
+                        <th>Total Price: @Model.Sum(m=> m.Quantity * m.Priceattimeofpurchase)</th>
+                    </tr>
+				</tbody>
+			</table>
+            <a class="btn btn-primary" href="@Url.Action("ToPdf", new { id = Model.FirstOrDefault().Orderid}) ">Download PDF <i class="fa-solid fa-file-lines"></i></a>
+		</div><!-- End .row -->
+	</div><!-- End .container -->
+</div>

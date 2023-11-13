@@ -1,0 +1,8 @@
+﻿<a asp-action="MyWishList" asp-controller="Wishlists" class="wishlist-link">
+    <i class="icon-heart-o"></i>
+    @if (ViewBag.WishlistCount != "0")
+    {
+        <span class="wishlist-count">@ViewBag.WishlistCount</span>
+    }
+    <span class="wishlist-txt">My Wishlist</span>
+</a>

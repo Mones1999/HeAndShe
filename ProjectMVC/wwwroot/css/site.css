@@ -1,0 +1,11 @@
+.add-review {
+    margin-top:80px;
+}
+.add-review h3 {
+    font-size:25px
+}
+.add-review .form-group textarea {
+    background-color:white;
+    width:900px;
+
+}

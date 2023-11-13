@@ -1,0 +1,285 @@
+﻿@model UserProfile
+@{
+    ViewData["Title"] = "UserProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<link rel="stylesheet" href="~/css/sweetalert2.min.css">
+</head>
+<main class="main">
+	<div class="page-header text-center" style="background-image: url('/assets/images/page-header-bg.jpg')">
+		<div class="container">
+			<h1 class="page-title">My Account<span>@Model.User.Username</span></h1>
+		</div><!-- End .container -->
+	</div><!-- End .page-header -->
+	<nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+				<li class="breadcrumb-item"><a href="#">Shop</a></li>
+				<li class="breadcrumb-item active" aria-current="page">My Account</li>
+			</ol>
+		</div><!-- End .container -->
+	</nav><!-- End .breadcrumb-nav -->
+
+	<div class="page-content">
+		<div class="dashboard">
+			<div class="container">
+				<div class="row">
+					<aside class="col-md-4 col-lg-3">
+						<ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+							<li class="nav-item">
+								<a class="nav-link active" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Account Details</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard" aria-selected="true">Wallet Details</a>
+							</li>				 
+							<li class="nav-item"> 
+								<a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab" aria-controls="tab-orders" aria-selected="false">Orders</a>
+							</li>				  						
+							<li class="nav-item">
+								<a class="nav-link" asp-action="Logout" asp-controller="Account">Sign Out</a>
+							</li>
+						</ul>
+					</aside><!-- End .col-lg-3 -->
+
+					<div class="col-md-8 col-lg-9">
+						<div class="tab-content">
+							<div class="tab-pane fade" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
+								<div class="accordion accordion-rounded" id="accordion-5">
+									<div class="row">
+										<div class="col-12">
+											<div class="card card-dashboard">
+												<div class="card-body">
+													<h3 class=" title-sm">Your Balance: <span>@Model.Wallet.Balance</span></h3><!-- End .card-title -->
+												</div><!-- End .card-body -->
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-12">
+											<div class="card card-box card-sm bg-light">
+												<div class="card-header" id="heading5-1">
+													<h2 class="card-title">
+														<a role="button" data-toggle="collapse" href="#collapse5-1" aria-expanded="false" aria-controls="collapse5-1" class="collapsed">
+															Wallet Transactions
+														</a>
+													</h2>
+												</div><!-- End .card-header -->
+												<div id="collapse5-1" class="collapse" aria-labelledby="heading5-1" data-parent="#accordion-5" style="">
+													<div class="card-body">
+														@if (Model.Wallettransaction.Count == 0)
+														{
+															<span>No Transactions</span>
+
+														}
+														else
+														{
+
+															<table class="table" id="example"> 
+																
+																	<theah>
+																	<tr>
+																		<th>Transaction Type</th>
+																		<th>Amount</th>
+																		<th>Transaction Date</th>
+																		<th>Description</th>
+																	</tr>
+																	</theah>
+																
+																@foreach (var transactions in Model.Wallettransaction)
+																{
+																	bool isDeposit = transactions.Transactiontype == "Deposit";
+																	<tbody>
+																	   <tr>
+																		<td class="@(isDeposit ? "text-success" : "text-danger" )"><strong>@transactions.Transactiontype</strong></td>
+																		<td>@transactions.Amount</td>
+																		<td>@transactions.Transactiondate</td>
+																		<td>@transactions.Description</td>
+																	
+																	   </tr>
+																	</tbody>
+																}
+
+
+															</table>
+														}
+													</div><!-- End .card-body -->
+
+												</div><!-- End .collapse -->
+											</div><!-- End .card -->
+											<div class="card card-box card-sm bg-light">
+												<div class="card-header" id="heading5-2">
+													<h2 class="card-title">
+														<a class="collapsed" role="button" data-toggle="collapse" href="#collapse5-2" aria-expanded="false" aria-controls="collapse5-2">
+															Charge your wallet
+														</a>
+													</h2>
+												</div><!-- End .card-header -->
+												<div id="collapse5-2" class="collapse" aria-labelledby="heading5-2" data-parent="#accordion-5">
+													<div class="card-body">
+														<form asp-action="ChargeWallet" class="form">
+															<div class="row">
+																<div class="col-12">
+																	<div>
+																		<input type="text" class="form-control" placeholder="Card Number">
+																		
+																	</div>
+																</div>
+
+																<div class="col-6">
+																	<div class="form__div">
+																		<input type="text" class="form-control" placeholder="MM / YY">
+																		
+																	</div>
+																</div>
+
+																<div class="col-6">
+																	<div class="form__div">
+																		<input type="password" class="form-control" placeholder="CVV Code">
+																		
+																	</div>
+																</div>
+																<div class="col-12">
+																	<div class="form__div">
+																		<input type="text" class="form-control" placeholder="Name on the card">
+																	</div>
+																</div>
+																<div class="col-12">
+																	<button type="submit" class="btn btn-primary btn-rounded w-100 ">Charge</button>
+																</div>
+															</div>
+														</form>
+													</div><!-- End .card-body -->
+												</div><!-- End .collapse -->
+											</div>
+
+										</div>
+
+									</div>
+								</div>
+							</div><!-- .End .tab-pane -->
+
+							<div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
+								@if (Model.Order.Count() == 0)
+								{
+									<p>No order has been made yet.</p>
+									<a asp-action="Index" asp-controller="Home" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
+								}
+								else
+								{
+									<table class="table text-center">
+											<thead>
+												<th>Order Number</th>
+												<th>Order Date</th>
+												<th>Order Status</th>
+												<th>Shipment Status</th>
+												<th>Shippment Track Number</th>
+											</thead>
+									@foreach (var order in Model.Order)
+									{
+											<tbody>
+												<td>@order.Orderid</td>
+												<td>@order.Orderdate</td>
+											<td class="@(order.Status == "Accepted" ? "text-success" : order.Status == "Rejected" ? "text-danger" : "")"><strong>@order.Status</strong></td>
+											<td>@(order.Status == "Accepted" ? "Delivred" : order.Status == "Rejected" ? "Cancled" : "In Transit")</td>
+											<td>@order.Shipmenttrackingnumber</td>
+											<td><a asp-action="OrderDetails" asp-route-id="@order.Orderid" class="btn">View Details</a></td>
+											</tbody>
+										
+									}
+									</table>
+								}
+							</div><!-- .End .tab-pane -->
+
+
+							<div class="tab-pane fade active show" id="tab-account" role="tabpanel" aria-labelledby="tab-account-link">
+								<form action="EditUserProfile" method="post">
+									<label>User Name *</label>
+									<input type="text" name="username" value="@Model.User.Username" class="form-control" >
+									<small class="form-text">This will be how your name will be displayed in the account section and in reviews</small>
+									<div class="row">
+										<div class="col-lg-6">
+											<label>Address *</label>
+											<input type="text" name="address" value="@Model.User.Address" class="form-control mb-2" required>
+										</div>
+										<div class="col-lg-6">
+											<label>Registeration Date</label>
+											<input type="text" value="@Model.User.Registrationdate" class="form-control mb-2" disabled>
+										</div>
+									</div>
+									<label>Email address *</label>
+									<input type="email" name="email" value="@Model.User.Email" class="form-control" required>
+
+									<label>Phone number *</label>
+									<input type="text" name="phoneNumber" value="@Model.User.Phonenumber" class="form-control" required>
+
+									<label>Current password (leave blank to leave unchanged)</label>
+									<input type="password" name="currentPassword" class="form-control">
+									
+
+									<label>New password (leave blank to leave unchanged)</label>
+									<input type="password" name="newPassword" class="form-control">
+
+									<label>Confirm new password *</label>
+									<input type="password" name="newPasswordConfirm" class="form-control mb-2">
+
+									
+
+									<button type="submit" class="btn btn-outline-primary-2">
+										<span>SAVE CHANGES</span>
+										<i class="icon-long-arrow-right"></i>
+									</button>
+								</form>
+							</div><!-- .End .tab-pane -->
+						</div>
+					</div><!-- End .col-lg-9 -->
+				</div><!-- End .row -->
+			</div><!-- End .container -->
+		</div><!-- End .dashboard -->
+	</div><!-- End .page-content -->
+</main><!-- End .main -->
+@if (TempData["ErrorMessage"] != null)
+{
+	<script>
+		Swal.fire({
+		icon: 'error',
+		title: 'Oops...',
+		text: '@TempData["ErrorMessage"]',
+		})
+	</script>
+}
+else if (TempData["ErrorMessageEmail"] != null)
+{
+	<script>
+		Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: '@TempData["ErrorMessageEmail"]',
+		})
+	</script>
+}
+else if (TempData["SuccessMessage"] != null)
+{
+	<script>
+		Swal.fire({
+		icon: 'success',
+		title: 'Done',
+			text: '@TempData["SuccessMessage"]',
+		})
+	</script>
+
+}
+else if (TempData["ChargeSuccess"] != null)
+{
+	<script>
+		Swal.fire({
+			icon: 'success',
+			title: 'Done',
+			text: '@TempData["ChargeSuccess"]',
+		})
+	</script>
+	
+}
+

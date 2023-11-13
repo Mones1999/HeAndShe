@@ -1,0 +1,103 @@
+﻿@model IEnumerable<UserDetails>
+@{
+    ViewData["Title"] = "Users";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<head>
+    
+    <link href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" rel="stylesheet" />
+</head>
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Users details</h1>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+
+                <!-- /.card -->
+
+                <div class="card shadow-none">
+
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example" class="table table-bordered text-center table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Details</th>
+                                    <th>User name</th>
+                                    <th>Email</th>
+                                    <th>Phone number</th>
+                                    <th>Location</th>
+                                    <th>Number of orders</th>
+                                    <th>Number of reviews</th>
+                                    <th>Role type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in Model)
+                                {
+                                   
+                                    <tr>
+                                        <td>
+                                            <a asp-action="userProfile" asp-route-userId="@user.User.Userid" class="btn btn-primary">View details</a>
+                                        </td>
+                                        <td>@user.User.Username</td>
+                                        <td>@user.User.Email</td>
+                                        <td>@user.User.Phonenumber</td>
+                                        <td>@user.User.Address</td>
+                                        <td>@user.Order.Count()</td>
+                                        <td>@user.Review.Count()</td>
+                                        <td>@user.User.Role.Rolename</td>
+                                        
+                                        
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+                <a asp-action="AddUser" asp-controller="Admin" class="btn btn-primary">Add new user</a>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js" defer></script>
+<script>
+
+    $(document).ready(function () {
+        $('#example').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ]
+        });
+    });
+
+</script>
+

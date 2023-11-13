@@ -1,0 +1,82 @@
+﻿@model ProjectMVC.Models.Product
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Productid" />
+            <div class="form-group">
+                <label asp-for="Productname" class="control-label"></label>
+                <input asp-for="Productname" class="form-control" />
+                <span asp-validation-for="Productname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Categoryid" class="control-label"></label>
+                <select asp-for="Categoryid" class="form-control" asp-items="ViewBag.Categoryid"></select>
+                <span asp-validation-for="Categoryid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Stockquantity" class="control-label"></label>
+                <input asp-for="Stockquantity" class="form-control" />
+                <span asp-validation-for="Stockquantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageFile" class="control-label"></label>
+                <input asp-for="ImageFile" class="form-control" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rating" class="control-label"></label>
+                <input asp-for="Rating" class="form-control" />
+                <span asp-validation-for="Rating" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Numberofreviews" class="control-label"></label>
+                <input asp-for="Numberofreviews" class="form-control" />
+                <span asp-validation-for="Numberofreviews" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Productsize" class="control-label"></label>
+                <input asp-for="Productsize" class="form-control" />
+                <span asp-validation-for="Productsize" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Couponid" class="control-label"></label>
+                <select asp-for="Couponid" class="form-control" asp-items="ViewBag.Couponid"></select>
+                <span asp-validation-for="Couponid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

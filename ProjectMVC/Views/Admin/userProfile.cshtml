@@ -1,0 +1,337 @@
+﻿@model UserDetails
+@{
+    ViewData["Title"] = $"{Model.User.Username} Account";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+
+    var userId = Model.User.Userid;
+    var OrdersCount = Model.Order.Where(o => o.Userid == userId).Count();
+    var reviewsCount = Model.Review.Where(r => r.Userid == userId).Count();
+    var testimonialsCount = Model.Testimonial.Where(r => r.Userid == userId).Count();
+
+    var firstThreeReviews = Model.Review.TakeLast(3);
+    var firstThreeOrders = Model.Order.TakeLast(3);
+    var testimonials = Model.Testimonial.Take(3);
+}
+<head>
+    <script src="https://kit.fontawesome.com/4c8029d6be.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+</head>
+
+
+<section class="content">
+    <div class="container-fluid ">
+        <div class="row p-3">
+            <div class="col-md-3">
+
+                <!-- Profile Image -->
+                <div class="card card-primary card-outline">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <img class="profile-user-img img-fluid img-circle" src="~/Images/ProfilePic.webp" alt="User profile picture">
+                        </div>
+                        <h3 class="profile-username text-center">@Model.User.Username</h3>
+
+                        <p class="text-muted text-center">@Model.User.Role.Rolename</p>
+
+                        <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                                <b>Orders</b> <a class="float-right">@OrdersCount</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Reviwes</b> <a class="float-right">@reviewsCount</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Testimonials</b> <a class="float-right">@testimonialsCount</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Wallet Balance</b> <a class="float-right">@Model.Wallet.Balance JD</a>
+                            </li>
+                        </ul>
+                        <a href="#" class="btn btn-danger btn-block delete-account" data-user-id="@Model.User.Userid"><b>Delete Account</b></a>
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+                <!-- About Me Box -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">About Me</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <strong><i class="fas fa-map-marker-alt mr-1"></i> Address</strong>
+
+                        <p class="text-muted">@Model.User.Address</p>
+
+                        <hr>
+
+                        <strong><i class="fa-solid fa-phone"></i> Phone number</strong>
+
+                        <p class="text-muted">
+                            @Model.User.Phonenumber
+                        </p>
+
+                        <hr>
+
+                        <strong><i class="fa-regular fa-calendar-days"></i> Registeration Date</strong>
+
+                        <p class="text-muted">@Model.User.Registrationdate</p>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <div class="col-md-9">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Personal information</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form asp-action="EditProfile" asp-controller="Admin" method="post">
+                        <input type="hidden" name="userId" value="@Model.User.Userid" />
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="username">User name</label>
+                                <input name="userName" type="text" class="form-control" id="username" value="@Model.User.Username">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email address</label>
+                                <input name="email" type="email" class="form-control" id="email" value="@Model.User.Email">
+                            </div>
+                            @if (Model.User.Userid == 93)
+                            {
+                                <div class="form-group">
+                                    <label>Select Role</label>
+                                    <select name="Roleid" asp-items="ViewBag.Roleid" class="custom-select" disabled>
+                                    </select>
+                                </div>
+                            }else
+                            {
+
+                                <div class="form-group">
+                                    <label>Select Role</label>
+                                    <select name="Roleid" asp-items="ViewBag.Roleid" class="custom-select">
+                                    </select>
+                                </div>
+                            }
+                            
+                            
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="newPassword">New password (leave blank to leave unchanged)</label>
+                                        <input name="newPassword" type="password" class="form-control" id="password" placeholder="New password">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="newPassword">Confirm new password</label>
+                                        <input name="ConfirmNewPassword" type="password" class="form-control" id="newPassword" placeholder="Confirm new password">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="Address">Address</label>
+                                        <input name="address" type="text" class="form-control" id="Address" value="@Model.User.Address">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="PhoneNumber">Phone number</label>
+                                        <input name="phoneNumber" type="text" class="form-control" id="PhoneNumber" value="@Model.User.Phonenumber">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card card-primary card-outline card-outline-tabs">
+                    <div class="card-header p-0 border-bottom-0">
+                        <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-home" role="tab" aria-controls="custom-tabs-four-home" aria-selected="false">Orders (@OrdersCount)</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Reviews (@reviewsCount)</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#custom-tabs-four-messages" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">Testimonials (@testimonialsCount)</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content" id="custom-tabs-four-tabContent">
+                            <div class="tab-pane fade active show" id="custom-tabs-four-home" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
+                                @if (OrdersCount == 0)
+                                {
+                                    <span>No Orders</span>
+                                }
+                                else
+                                {
+                                    <table class="table">
+                                        <tr>
+                                            <th>Oder ID</th>
+                                            <th>Total amount</th>
+                                            <th>Order date</th>
+                                            <th>Order status</th>
+                                        </tr>
+                                        @foreach (var orders in firstThreeOrders)
+                                        {
+                                            <tr>
+                                                <td>@orders.Orderid</td>
+                                                <td>@orders.Totalamount</td>
+                                                <td>@orders.Orderdate</td>
+                                                <td>@orders.Status</td>
+                                            </tr>
+                                        }
+
+                                    </table>
+                                    <a asp-action="OrdersByUser" asp-route-userId="@Model.User.Userid" class="btn btn-primary">View All</a>
+                                }
+                            </div>
+                            <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
+                                @if (reviewsCount == 0)
+                                {
+                                    <span>No Reviews</span>
+                                
+                                }
+                                else
+                                {
+                                    <table class="table">
+                                        <tr>
+                                            <th>Product Name</th>
+                                            <th>Review content</th>
+                                            <th>Review date</th>
+                                        </tr>
+                                        @foreach (var reviews in firstThreeReviews)
+                                        {
+                                            <tr>
+                                                <td>@reviews.Product.Productname</td>
+                                                <td>@reviews.Reviewtext</td>
+                                                <td>@reviews.Reviewdate</td>
+                                            </tr>
+                                        }
+
+                                    </table>
+                                    <a asp-action="ReviewsByUser" asp-route-userId="@Model.User.Userid" class="btn btn-primary">View All</a>
+                                }
+                            </div>
+                            <div class="tab-pane fade" id="custom-tabs-four-messages" role="tabpanel" aria-labelledby="custom-tabs-four-messages-tab">
+                                @if (testimonialsCount == 0)
+                                {
+                                    <span>No Testimonials</span>
+                                }
+                                else
+                                {
+                                    <table class="table">
+                                        <tr>
+                                            <th>Testimonial content</th>
+                                            <th>Status</th>
+                                        </tr>
+                                        @foreach (var testimonial in testimonials)
+                                        {
+                                            <tr>
+                                                <td>@testimonial.Testimonialcontent</td>
+                                                <td>@testimonial.Status</td>
+                                            </tr>
+                                        }
+
+                                    </table>
+                                    <a asp-action="TestimonailsByUser" asp-route-userId="@Model.User.Userid" class="btn btn-primary">View All</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+@if (TempData["ErrorMessage"] != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '@TempData["ErrorMessage"]',
+        })
+    </script>
+}
+else if (TempData["SuccessMessage"] != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Done',
+            text: '@TempData["SuccessMessage"]',
+        })
+    </script>
+}
+else if (TempData["ErrorMessage2"] != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '@TempData["ErrorMessage2"]',
+        })
+    </script>
+}
+<script>
+    document.querySelector('.delete-account').addEventListener('click', function (e) {
+        e.preventDefault(); 
+        var userId = this.getAttribute('data-user-id'); 
+        var deleteUrl = '/Admin/DeleteProfile?userId=' + userId; 
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                
+                fetch(deleteUrl, {
+                    method: 'POST', 
+                    headers: {
+                        
+                        'X-CSRF-TOKEN': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    },
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        Swal.fire(
+                            'Deleted!',
+                            'The account has been deleted.',
+                            'success'
+                        ).then(() => {
+                            window.location.href = '/Admin/Users'; 
+                        });
+                    })
+                    .catch(error => {
+                        Swal.fire(
+                            'Error!',
+                            'There was an issue deleting the account.',
+                            'error'
+                        );
+                    });
+            }
+        })
+    });
+</script>

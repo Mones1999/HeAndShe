@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Currency>
+
+    <head>
+        <style>
+        .form-select{
+            border-radius:0px;
+            border: 1px solid #FFF;
+            color: #777;
+        }
+
+            .form-select::focus, .form-select::active, .form-select::after{
+                border-radius: 0px;
+        }
+
+        .form-select option{
+                border-radius: 0px;
+                border: 1px solid #FFF;
+                color: #777;
+        }
+        </style>
+    </head>
+
+<div class="header-dropdown">
+   
+    
+        <form method="post" class="ml-3" action="@Url.Action("SetCurrencyInSession", "Currencies")">
+
+        <select class="form-select" id="specificSizeSelect" name="currencyCode" onchange="this.form.submit()">
+                
+                @foreach (var currency in ViewBag.Currencies)
+                {
+                if (Context.Session.GetString("UserCurrency") == currency.Currencycode)
+                {
+                    <option value="@currency.Currencycode" selected>@currency.Currencycode</option>
+                }
+                else
+                {
+                    <option value="@currency.Currencycode">@currency.Currencycode</option>
+                }
+            }
+        </select>
+        </form>
+
+    
+</div><!-- End .header-dropdown -->

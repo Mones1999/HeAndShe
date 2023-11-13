@@ -1,0 +1,37 @@
+﻿@model ProjectMVC.Models.Category
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Category</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Categoryid" />
+            <div class="form-group">
+                <label asp-for="Categoryname" class="control-label"></label>
+                <input asp-for="Categoryname" class="form-control" />
+                <span asp-validation-for="Categoryname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Genderid" class="control-label"></label>
+                <select asp-for="Genderid" class="form-control" asp-items="ViewBag.Genderid"></select>
+                <span asp-validation-for="Genderid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

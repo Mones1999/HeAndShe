@@ -1,0 +1,70 @@
+﻿@model User
+@{
+    ViewData["Title"] = "Add User";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+    var role = ViewBag.Role as List<Role>;
+}
+
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-primary mt-3">
+                <div class="card-header ">
+                    <h3 class="card-title">Add new user</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form method="post" asp-action="AddUser">
+                    <input asp-for="Userid" type="hidden" />
+                    <input type="hidden" name="userId" value="41">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="username">User name</label>
+                            <input asp-for="Username" type="text" class="form-control" id="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input asp-for="Email" type="email" class="form-control" id="email">
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="newPassword">Password</label>
+                                <input asp-for="Password" type="password" class="form-control" id="password" placeholder="Password">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Select Role</label>
+                            <select asp-for="Roleid" asp-items="ViewBag.Roleid" class="custom-select">
+                                
+                            </select>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="Address">Address</label>
+                                    <input asp-for="Address" type="text" class="form-control" id="Address">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="PhoneNumber">Phone number</label>
+                                    <input asp-for="Phonenumber" type="text" class="form-control" id="PhoneNumber">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.card-body -->
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Add new</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
