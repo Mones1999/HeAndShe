@@ -21,6 +21,7 @@ namespace ProjectMVC.Controllers
 		public HomeController(ModelContext context, CurrencyService currencyService, IConverter converter)
         {
             _context = context;
+
             _currencyService = currencyService;
 			_converter = converter;
         }
@@ -77,8 +78,8 @@ namespace ProjectMVC.Controllers
         private string GetOrderDetailsHtml(IQueryable<Orderdetail> orderDetails)
         {
             StringBuilder htmlBuilder = new StringBuilder();
-            var userId = HttpContext.Session.GetInt32("UserId");
-            var user = _context.Users.SingleOrDefault(u => u.Userid == userId);
+            var CurrentUserId = HttpContext.Session.GetInt32("UserId");
+            var user = _context.Users.SingleOrDefault(u => u.Userid == CurrentUserId);
             var payment = _context.Payments.Where(p => p.Orderid == orderDetails.Select(o => o.Orderid).FirstOrDefault());
             // Include the styling
             htmlBuilder.Append(@"
