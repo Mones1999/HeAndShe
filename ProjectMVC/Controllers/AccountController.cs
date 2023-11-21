@@ -8,6 +8,7 @@ namespace ProjectMVC.Controllers
 {
 	public class AccountController : Controller
 	{
+ // Some Edit
 		private readonly ModelContext _context;
 		public AccountController(ModelContext context)
 		{
