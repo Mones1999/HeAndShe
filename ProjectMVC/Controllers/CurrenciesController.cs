@@ -26,18 +26,6 @@ namespace ProjectMVC.Controllers
             // Get user by id
             var id = HttpContext.Session.GetInt32("UserId");
 
-            //if (id != null) 
-            //{
-            //    var user = _context.Users.Find((decimal)id);
-
-            //    // Get Currency by Currencycode and set it for user
-            //    var currency = _context.Currencies.SingleOrDefault(c => c.Currencycode == currencyCode);
-            //    //user.Currencyid = currency.Currencyid;
-            //    _context.Update(user);
-            //    await _context.SaveChangesAsync();
-            //}
-
-
             // Redirect to the same page the user was on
             var referrer = Request.Headers["Referer"].ToString();
             if (!string.IsNullOrEmpty(referrer))
